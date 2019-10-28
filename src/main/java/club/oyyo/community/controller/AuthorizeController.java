@@ -2,7 +2,9 @@ package club.oyyo.community.controller;
 
 import club.oyyo.community.entity.AccesToken;
 import club.oyyo.community.entity.GithubUser;
+import club.oyyo.community.entity.User;
 import club.oyyo.community.provider.GithubProvider;
+import club.oyyo.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 /**
  * @ClassName: AuthorizeController
@@ -24,6 +27,9 @@ public class AuthorizeController {
 
     @Autowired
     private GithubProvider githubProvider;
+
+    @Autowired
+    private UserService userService;
 
     @Value("${github.client.id}")
     private String clientId;
@@ -45,10 +51,18 @@ public class AuthorizeController {
         accesToken.setClient_id(clientId);
         accesToken.setRedirect_uri(clientRedirectUri);
         String accessToken = githubProvider.getAccessToken(accesToken);
-        GithubUser user = githubProvider.getUser(accessToken);
-        if (user != null) {
+        GithubUser githubUser = githubProvider.getUser(accessToken);
+        if (githubUser != null) {
             //登录成功 写入cookie和session
-            request.getSession().setAttribute("user",user);
+            request.getSession().setAttribute("user",githubUser);
+            User user = new User();
+            user.setName(githubUser.getName());
+            user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setToken(UUID.randomUUID().toString());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+
+            userService.addUser(user);
             return "redirect:/";
         }else {
             //登录失败
