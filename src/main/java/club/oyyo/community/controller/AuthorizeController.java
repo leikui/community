@@ -9,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -23,6 +27,7 @@ import java.util.UUID;
  */
 
 @Controller
+@RequestMapping("oyyo")
 public class AuthorizeController {
 
     @Autowired
@@ -43,7 +48,8 @@ public class AuthorizeController {
     @GetMapping("callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request){
+                           HttpServletRequest request,
+                           HttpServletResponse response){
         AccesToken accesToken = new AccesToken();
         accesToken.setCode(code);
         accesToken.setState(state);
@@ -52,21 +58,24 @@ public class AuthorizeController {
         accesToken.setRedirect_uri(clientRedirectUri);
         String accessToken = githubProvider.getAccessToken(accesToken);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        if (githubUser != null) {
-            //登录成功 写入cookie和session
-            request.getSession().setAttribute("user",githubUser);
+        if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
             user.setName(githubUser.getName());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setToken(UUID.randomUUID().toString());
-            user.setGmtCreate(System.currentTimeMillis());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
+            user.setBio(githubUser.getBio());
+            user.setGmtCreate(Calendar.getInstance().getTimeInMillis());
             user.setGmtModified(user.getGmtCreate());
-
             userService.addUser(user);
-            return "redirect:/";
+            //登录成功 写入cookie和session
+            response.addCookie(new Cookie("token",token));
+
+            return "redirect:/oyyo/";
         }else {
             //登录失败
-            return "redirect:/";
+            return "redirect:/oyyo/";
 
         }
     }

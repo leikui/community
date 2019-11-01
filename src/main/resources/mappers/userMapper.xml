@@ -5,8 +5,19 @@
     <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
         tb_user
-        (account_id, name, token, gmt_create, gmt_modified)
+        (account_id, name, token,bio,avatar_url, gmt_create, gmt_modified)
         VALUES
-        (#{accountId},#{name},#{token},#{gmtCreate},#{gmtModified})
+        (#{accountId},#{name},#{token},#{bio},#{avatarUrl},#{gmtCreate},#{gmtModified})
     </insert>
+
+    <!-- User findByToken(String token);-->
+    <select id="findByToken" resultType="club.oyyo.community.entity.User">
+        select
+            id,account_id accountId, name, token,bio,avatar_url avatarUrl,
+            gmt_create gmtCreate, gmt_modified gmtModified
+        from
+            tb_user
+        where
+            token = #{token}
+    </select>
 </mapper>

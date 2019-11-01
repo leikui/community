@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.oyyo.community.mapper.QuestionMapper">
+    <!-- Integer insertQuestion();-->
+    <insert id="insertQuestion" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_question (
+            id,title,description,creator_id,
+            comment_num,view_num,like_num,tags,
+            gmt_create,gmt_modified)
+        VALUES (
+            #{id},#{title},#{description},#{creatorId},
+            #{commentNum},#{viewNum},#{likeNum},#{tags},
+            #{gmtCreate},#{gmtModified}
+        )
+
+    </insert>
+
+    <!--List<QuestionVo> questionsList();-->
+    <select id="questionsList" resultMap="questionListResultMap">
+        SELECT
+            q.id, q.title, q.description, q.creator_id,
+            q.comment_num, q.view_num, q.like_num, q.tags,
+            q.gmt_create, q.gmt_modified,u.avatar_url,
+            u.name,u.id
+        FROM
+            tb_question q
+        LEFT
+        JOIN
+            tb_user u
+        ON
+            q.creator_id = u.id
+        order by
+            q.id
+        desc
+    </select>
+    
+    <resultMap id="questionListResultMap" type="club.oyyo.community.VO.QuestionVo">
+        <id column="qid" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="description" property="description"></result>
+        <result column="creator_id" property="creatorId"></result>
+        <result column="comment_num" property="commentNum"></result>
+        <result column="view_num" property="viewNum"></result>
+        <result column="like_num" property="likeNum"></result>
+        <result column="tags" property="tags"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="gmt_modified" property="gmtModified"></result>
+
+        <collection property="user" ofType="club.oyyo.community.entity.User">
+            <result column="name" property="name"></result>
+            <result column="avatar_url" property="avatarUrl"></result>
+            <result column="uid" property="id"></result>
+        </collection>
+    </resultMap>
+
+</mapper>

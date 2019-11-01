@@ -3,8 +3,7 @@ github:
   client:
     id : f96f6d763511b1ce1478
     secret : d575fcc52dd415f65cb59a6fc79fb69b38949fde
-    redirectUri : http://localhost:8080/callback
-
+    redirectUri : http://localhost:8080/oyyo/callback
 #mysql
 spring:
   datasource:
@@ -12,7 +11,16 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false
+
 mybatis:
   mapper-locations: classpath:mappers/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helperDialect: mysql                           #分页插件方言选择
+  reasonable: true                               #合理化参数，设为true时pageNum<=0 时会查第一页， pageNum>pages（超过总数时），会查询最后一页
+  supportMethodsArguments: true
+  page-size : 5                                 #每页条数

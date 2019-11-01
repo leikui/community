@@ -32,4 +32,9 @@ public class UserServiceImpl implements UserService {
             System.out.println("插入失败");
         }
     }
+
+    @Override
+    public User findByToken(String token) {
+        return userMapper.findByToken(token);
+    }
 }

@@ -17,4 +17,12 @@ public interface UserMapper {
      * @return
      */
     Integer addUser(User user);
+
+    /**
+     * 根据 token 查询 用户信息
+     * @param token
+     * @return
+     */
+    User findByToken(String token);
+
 }
