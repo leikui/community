@@ -25,4 +25,10 @@ public interface QuestionMapper {
      */
     List<QuestionVo> questionsList(Integer pageNum);
 
+    /**
+     * 根据问题id  查询问题详情
+     * @param id
+     * @return
+     */
+    QuestionVo findById(Integer id);
 }

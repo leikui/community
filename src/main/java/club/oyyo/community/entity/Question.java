@@ -14,7 +14,7 @@ public class Question {
     private Integer id;
     private String title;
     private String description;
-    private Integer creatorId;
+    private String creatorId;
     private Integer commentNum;
     private Integer viewNum;
     private Integer likeNum;

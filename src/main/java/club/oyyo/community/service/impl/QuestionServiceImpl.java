@@ -52,11 +52,23 @@ public class QuestionServiceImpl implements QuestionService {
         if (pageNum == null || "".equals(pageNum)) {
             pageNum = 1;
         }
-        PageHelper.startPage(pageNum,size);
+        PageHelper.startPage(pageNum, size);
         List<QuestionVo> questionVos = questionMapper.questionsList(pageNum);
         PageInfo<QuestionVo> pageInfo = new PageInfo<>(questionVos);
         System.out.println("questionVos" + pageInfo);
         return pageInfo;
 
+    }
+
+    /**
+     * 根据问题id  查询问题详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public QuestionVo findById(Integer id) {
+        QuestionVo questionDetails = questionMapper.findById(id);
+        return questionDetails;
     }
 }

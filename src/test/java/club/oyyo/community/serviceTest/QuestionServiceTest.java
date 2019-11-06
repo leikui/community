@@ -1,5 +1,6 @@
 package club.oyyo.community.serviceTest;
 
+import club.oyyo.community.VO.QuestionVo;
 import club.oyyo.community.service.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class QuestionServiceTest {
     @Test
     public void questionVOTest(){
         Integer pageNum = 1;
-
+        QuestionVo byId = questionService.findById(46);
+        System.out.println(byId);
     }
 
 }

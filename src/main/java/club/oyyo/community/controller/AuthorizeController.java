@@ -72,10 +72,10 @@ public class AuthorizeController {
             //登录成功 写入cookie和session
             response.addCookie(new Cookie("token",token));
 
-            return "redirect:/oyyo/";
+            return "redirect:/oyyo";
         }else {
             //登录失败
-            return "redirect:/oyyo/";
+            return "redirect:/oyyo";
 
         }
     }

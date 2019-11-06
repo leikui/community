@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--顶部导航栏topbar-->
+<div class="row" style="background: #ffffff" th:fragment="topbar">
+    <div class="container-fluid" style="background: #ffffff; margin: 0 80px;">
+        <a id="oy" class="btn btn-default oyy-in" href="#" th:href="@{/oyyo}" role="button">OYYO 社区</a>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索问题">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <div class="btn-group btn-fabu">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        发布 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu fabu-menu ">
+                        <li><a href="#" th:href="@{/oyyo/publish}">问题</a></li>
+                    </ul>
+                </div>
+                <li class="dropdown" th:if="${session.user != null }">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" ><img class="avatar-img" src="" th:src="${session.user.getAvatarUrl()}"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" th:href="@{/oyyo/profile/questions(userId=${session.user.getAccountId()},pageNum=)}">消息中心</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">退出登录</a></li>
+                        <li role="separator" class="divider"></li>
+                    </ul>
+                </li>
+                <li th:if="${session.user == null}">
+                    <a href="https://github.com/login/oauth/authorize?client_id=f96f6d763511b1ce1478&redirect_uri=http://localhost:8080/oyyo/callback&scope=user&state=1">登录</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -37,6 +37,8 @@ public class IndexController {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             System.out.println("cookies为空");
+            PageInfo<QuestionVo> questionVos = questionService.questionsList(pageNum);
+            model.addAttribute("questionVos" ,questionVos);
             return "index";
         }
         for (Cookie cookie : cookies) {

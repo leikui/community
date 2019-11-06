@@ -1,5 +1,6 @@
 package club.oyyo.community.controller;
 
+import club.oyyo.community.VO.QuestionVo;
 import club.oyyo.community.entity.Question;
 import club.oyyo.community.entity.User;
 import club.oyyo.community.service.QuestionService;
@@ -29,7 +30,12 @@ public class PublishController {
     QuestionService questionService;
 
     @GetMapping("publish")
-    public String publish(){
+    public String publish(@RequestParam("id") Integer id,Model model) {
+        if (id != null) {
+            QuestionVo question = questionService.findById(id);
+            model.addAttribute("question",question);
+            return "publish";
+        }
         return "publish";
     }
 
@@ -37,28 +43,28 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
-                            HttpServletRequest request, Model model){
+                            HttpServletRequest request, Model model) {
 
-        model.addAttribute("title",title);
-        model.addAttribute("description",description);
-        model.addAttribute("tag",tag);
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
 
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            model.addAttribute("error","用户未登录，请重新登录！");
+            model.addAttribute("error", "用户未登录，请重新登录！");
             System.out.println("error.....");
             return "publish";
         }
         if (title == null || "".equals(title)) {
-            model.addAttribute("error","标题不能为空");
+            model.addAttribute("error", "标题不能为空");
             return "publish";
         }
         if (description == null || "".equals(description)) {
-            model.addAttribute("error","问题补充不能为空");
+            model.addAttribute("error", "问题补充不能为空");
             return "publish";
         }
         if (tag == null || "".equals(tag)) {
-            model.addAttribute("error","标签不能为空");
+            model.addAttribute("error", "标签不能为空");
             return "publish";
         }
 
@@ -66,13 +72,12 @@ public class PublishController {
         question.setTitle(title);
         question.setDescription(description);
         question.setTags(tag);
-        question.setCreatorId(user.getId());
+        question.setCreatorId(user.getAccountId());
         question.setGmtCreate(Calendar.getInstance().getTimeInMillis());
         question.setGmtModified(question.getGmtCreate());
 
         questionService.insertQuestion(question);
-        System.out.println("hehe...");
-        return "redirect:/oyyo/";
+        return "redirect:/oyyo";
     }
 
 }
