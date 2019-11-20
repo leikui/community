@@ -31,4 +31,10 @@ public interface QuestionMapper {
      * @return
      */
     QuestionVo findById(Integer id);
+
+    /**
+     * 更新问题详情
+     * @return
+     */
+    Integer updateQuestion();
 }

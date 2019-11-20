@@ -9,7 +9,7 @@
     <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
     <style>
-        .oyy-in{
+        .oyy-in {
             float: left;
             margin: 8px;
             background: #FFFFFF;
@@ -35,11 +35,13 @@
             <div class="media" th:each="question : ${questionVos.getList()}">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object question-avatar-img img-rounded" src="..." th:src="${question.user.getAvatarUrl()}" alt="...">
+                        <img class="media-object question-avatar-img img-rounded" src="..."
+                             th:src="${question.user.getAvatarUrl()}" alt="...">
                     </a>
                 </div>
-                <div class="media-body" >
-                    <h4 class="media-heading" ><a th:text="${question.getTitle()}" th:href="@{/oyyo/questions/{id}(id=${question.getId()})}"></a></h4>
+                <div class="media-body">
+                    <h4 class="media-heading"><a th:text="${question.getTitle()}"
+                                                 th:href="@{/oyyo/questions/{id}(id=${question.getId()})}"></a></h4>
                     <p>
                         <a class="aw-question-tags" href="https://elasticsearch.cn/explore/category-2"
                            th:text="${question.getTags()}">
@@ -58,7 +60,7 @@
             </div>
             <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li  th:if="${questionVos.getPageNum() != 1}">
+                    <li th:if="${questionVos.getPageNum() != 1}">
                         <a href="#" aria-label="Previous" th:href="@{/oyyo/(pageNum=1)}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -68,7 +70,7 @@
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
-                    <th:block th:each="i:${#numbers.sequence(1,questionVos.getPages())}">
+                    <th:block th:each="i:${#numbers.sequence(1,questionVos.getPages() == 0 ? 1 : questionVos.getPages())}">
                         <li th:class="${questionVos.getPageNum() == i ?'active':''}">
                             <a href="#" th:href="@{/oyyo/(pageNum=${i})}" th:text="${i}">1</a>
                         </li>
@@ -88,7 +90,7 @@
             </nav>
 
         </div>
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" >
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3>问题发起指南</h3>
             <p><b>• 问题标题:</b> 请用<b style="color:red">精简</b>的语言描述您发布的问题，不超过25字</p>
             <p><b>• 问题补充:</b> 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料：

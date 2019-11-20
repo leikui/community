@@ -10,6 +10,13 @@
         (#{accountId},#{name},#{token},#{bio},#{avatarUrl},#{gmtCreate},#{gmtModified})
     </insert>
 
+    <!--Integer updateUserInfo(User accountId);-->
+    <update id="updateUserInfo">
+        UPDATE tb_user
+        SET token = #{token},avatar_url=#{avatarUrl}, gmt_modified=#{gmtModified}
+        WHERE account_id=#{accountId}
+    </update>
+
     <!-- User findByToken(String token);-->
     <select id="findByToken" resultType="club.oyyo.community.entity.User">
         select
@@ -20,4 +27,16 @@
         where
             token = #{token}
     </select>
+
+    <!--User findByGithubId(Integer id);-->
+    <select id="findByGithubId" resultType="club.oyyo.community.entity.User">
+        select
+            id,account_id accountId, name, token,bio,avatar_url avatarUrl,
+            gmt_create gmtCreate, gmt_modified gmtModified
+        from
+            tb_user
+        where
+            account_id = #{id}
+    </select>
+
 </mapper>

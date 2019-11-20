@@ -72,6 +72,15 @@
         </collection>
     </resultMap>
 
-
+    <!--Integer updateQuestion();-->
+    <update id="updateQuestion">
+        UPDATE
+            tb_question
+        SET
+            title=#{title},description=#{description},
+            tags=#{tags},gmt_modified =#{gmtModified}
+        WHERE
+            id = #{id}
+    </update>
 
 </mapper>

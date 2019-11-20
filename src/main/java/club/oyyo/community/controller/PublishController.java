@@ -7,10 +7,7 @@ import club.oyyo.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
@@ -30,8 +27,8 @@ public class PublishController {
     QuestionService questionService;
 
     @GetMapping("publish")
-    public String publish(@RequestParam("id") Integer id,Model model) {
-        if (id != null) {
+    public String publish(@RequestParam(value = "id",defaultValue = "-1") Integer id,Model model) {
+        if (id != -1) {
             QuestionVo question = questionService.findById(id);
             model.addAttribute("question",question);
             return "publish";
@@ -78,6 +75,13 @@ public class PublishController {
 
         questionService.insertQuestion(question);
         return "redirect:/oyyo";
+    }
+
+    @PutMapping("publish")
+    public String updateQuestion(@RequestParam(value = "id",defaultValue = "-1")Integer id){
+
+
+        return "";
     }
 
 }

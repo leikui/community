@@ -50,7 +50,7 @@
                     <div class="modal-footer community-text">
                         <span th:text="${#dates.format(questionDetails.getGmtCreate(),'yyyy-MM-dd HH:mm')}"></span>
                         &nbsp;
-                        <span class="glyphicon glyphicon-pencil">
+                        <span class="glyphicon glyphicon-pencil" th:if="${questionDetails.getUser().getToken() == #session.getAttribute('token')}">
                             <a class="community-text" th:href="@{/oyyo/publish(id=${questionDetails.getId()})}">编辑</a>
                         </span>
                     </div>
@@ -101,10 +101,10 @@
                 <div class="mod-body">
                     <dl>
                         <dt class="pull-left aw-border-radius-5">
-                            <a href="#"><img alt="leeq" src="#" data-bd-imgshare-binded="1"></a>
+                            <a href="#"><img class="avatar-img" th:src="${questionDetails.getUser().getAvatarUrl()}" data-bd-imgshare-binded="1"></a>
                         </dt>
                         <dd class="pull-left">
-                            <a class="aw-user-name" href="#" data-id="12157">leeq</a>
+                            <a class="aw-user-name" href="#" data-id="12157" th:text="${questionDetails.getUser().getName()}">leeq</a>
                             <p></p>
                         </dd>
                     </dl>

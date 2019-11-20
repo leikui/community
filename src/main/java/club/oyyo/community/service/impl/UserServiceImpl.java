@@ -37,4 +37,25 @@ public class UserServiceImpl implements UserService {
     public User findByToken(String token) {
         return userMapper.findByToken(token);
     }
+
+    /**
+     * 根据 token 查询 用户信息
+     *
+     * @param id
+     * @return User
+     */
+    @Override
+    public User findByGithubId(Long id) {
+        return userMapper.findByGithubId(id);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param accountId@return User
+     */
+    @Override
+    public void updateUserInfo(User accountId) {
+        userMapper.updateUserInfo(accountId);
+    }
 }

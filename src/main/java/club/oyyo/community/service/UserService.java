@@ -24,4 +24,18 @@ public interface UserService {
      * @return
      */
     User findByToken(String token);
+
+    /**
+     * 根据 token 查询 用户信息
+     * @param id
+     * @return User
+     */
+    User findByGithubId(Long id);
+
+    /**
+     * 更新用户信息
+     * @param id
+     * @return User
+     */
+    void updateUserInfo(User accountId);
 }

@@ -20,9 +20,21 @@ public interface UserMapper {
 
     /**
      * 根据 token 查询 用户信息
-     * @param token
-     * @return
+     * @param accesToken
+     * @return User
      */
-    User findByToken(String token);
+    User findByToken(String accesToken);
 
+    /**
+     * 根据 token 查询 用户信息
+     * @param id
+     * @return User
+     */
+    User findByGithubId(Long id);
+    /**
+     * 根据 accountId 查询 用户信息
+     * @param accountId
+     * @return User
+     */
+    Integer updateUserInfo(User accountId);
 }

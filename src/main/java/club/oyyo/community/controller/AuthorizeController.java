@@ -58,6 +58,7 @@ public class AuthorizeController {
         accesToken.setRedirect_uri(clientRedirectUri);
         String accessToken = githubProvider.getAccessToken(accesToken);
         GithubUser githubUser = githubProvider.getUser(accessToken);
+
         if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
             user.setName(githubUser.getName());
@@ -68,7 +69,13 @@ public class AuthorizeController {
             user.setBio(githubUser.getBio());
             user.setGmtCreate(Calendar.getInstance().getTimeInMillis());
             user.setGmtModified(user.getGmtCreate());
-            userService.addUser(user);
+
+            //用户数据已存在
+            User oldUser = userService.findByGithubId(githubUser.getId());
+            if (oldUser == null) {
+                userService.addUser(user);
+            }
+            userService.updateUserInfo(user);
             //登录成功 写入cookie和session
             response.addCookie(new Cookie("token",token));
 
@@ -79,4 +86,22 @@ public class AuthorizeController {
 
         }
     }
+
+    /**
+     * 退出登录
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request,HttpServletResponse response){
+
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return "redirect:/oyyo";
+    }
+
 }
